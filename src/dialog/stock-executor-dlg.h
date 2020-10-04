@@ -4,8 +4,8 @@
 
 #include <string>
 
-#include "helper/wmca_msg_sender.h"
-#include "helper/wmca_msg_receiver.h"
+#include "helper/xing_msg_sender.h"
+#include "helper/xing_msg_receiver.h"
 
 // CStockExecutorDlg 대화 상자
 class CStockExecutorDlg : public CDHtmlDialog
@@ -24,7 +24,7 @@ protected:
 
 #ifdef _DEBUG
     // Action functions for debugging
-    HRESULT OnButtonConnect(IHTMLElement* pElement);
+    HRESULT OnButtonLogin(IHTMLElement* pElement);
     HRESULT OnButtonDisconnect(IHTMLElement* pElement);
     HRESULT OnButtonIsConnected(IHTMLElement* pElement);
     HRESULT OnButtonInquireCurrentPrice(IHTMLElement* pElement);
@@ -44,18 +44,18 @@ protected:
     afx_msg HCURSOR OnQueryDragIcon();
 
     // Executor functions
-    afx_msg void OnConnect();
+    afx_msg void OnLogin();
     afx_msg void OnDisconnect();
     afx_msg void OnIsConnected();
     afx_msg void OnInquireCurrentPrice();
 
-    // Wmca function
-    afx_msg LRESULT OnWmcaEvent(WPARAM wParam, LPARAM lParam);
+    // XingAPI functions
+    afx_msg LRESULT OnWmLoginEvent(WPARAM wParam, LPARAM lParam);
 
     DECLARE_MESSAGE_MAP()
     DECLARE_DHTML_EVENT_MAP()
 
 private:
-    CWmcaMsgSender m_wmcaMsgSender;
-    CWmcaMsgReceiver m_wmcaMsgReceiver;
+    CXingMsgSender m_xingMsgSender;
+    CXingMsgReceiver m_xingMsgReceiver;
 };

@@ -1,6 +1,5 @@
 // stock-executor-dlg.cpp: 구현 파일
 //
-#define _UNICODE
 #include <string>
 #include <cpprest/json.h>
 
@@ -20,7 +19,7 @@ const DWORD WM_STOCK_EXECUTOR_SETSTRINGVARIABLE = WM_USER + 1001;
 BEGIN_DHTML_EVENT_MAP(CStockExecutorDlg)
 #ifdef _DEBUG
     // for debugging
-    DHTML_EVENT_ONCLICK(_T("ButtonConnect"), OnButtonConnect)
+    DHTML_EVENT_ONCLICK(_T("ButtonLogin"), OnButtonLogin)
     DHTML_EVENT_ONCLICK(_T("ButtonDisconnect"), OnButtonDisconnect)
     DHTML_EVENT_ONCLICK(_T("ButtonIsConnected"), OnButtonIsConnected)
     DHTML_EVENT_ONCLICK(_T("ButtonInquireCurrentPrice"), OnButtonInquireCurrentPrice)
@@ -46,13 +45,14 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
     ON_WM_COPYDATA()
 
     // for Executor
-    ON_BN_CLICKED(IDC_BTN_CONNECT, OnConnect)
+    ON_BN_CLICKED(IDC_BTN_LOGIN, OnLogin)
     ON_BN_CLICKED(IDC_BTN_DISCONNECT, OnDisconnect)
     ON_BN_CLICKED(IDC_BTN_ISCONNECTED, OnIsConnected)
     ON_BN_CLICKED(IDC_BTN_INQUIRECURRENTPRICE, OnInquireCurrentPrice)
 
-    // for WmcaEvent
-    ON_MESSAGE(CA_WMCAEVENT, OnWmcaEvent)
+    // for XingAPIEvent
+    ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
+
 END_MESSAGE_MAP()
 
 
@@ -117,7 +117,8 @@ BOOL CStockExecutorDlg::OnCopyData(CWnd* pWnd, COPYDATASTRUCT* pCopyDataStruct)
     switch (pCopyDataStruct->dwData) {
     case WM_STOCK_EXECUTOR_SETSTRINGVARIABLE:
     {
-        m_wmcaMsgSender.m_strData = (LPCTSTR)pCopyDataStruct->lpData;
+        m_xingMsgSender.m_strData.clear();
+        m_xingMsgSender.m_strData = (LPCWSTR)pCopyDataStruct->lpData;
         break;
     }
     default:
@@ -165,12 +166,13 @@ HCURSOR CStockExecutorDlg::OnQueryDragIcon()
 }
 
 #ifdef _DEBUG
-HRESULT CStockExecutorDlg::OnButtonConnect(IHTMLElement* /*pElement*/)
+HRESULT CStockExecutorDlg::OnButtonLogin(IHTMLElement* /*pElement*/)
 {
     web::json::value requestJson;
-    requestJson[L"id"] = web::json::value::string(L"id");
-    requestJson[L"pw"] = web::json::value::string(L"pw");
-    requestJson[L"certPw"] = web::json::value::string(L"certPw");
+    //requestJson[L"id"] = web::json::value::string(L"id");
+    //requestJson[L"pw"] = web::json::value::string(L"pw");
+    //requestJson[L"certPw"] = web::json::value::string(L"certPw");
+    //requestJson[L"serverType"] = web::json::value::string(L"serverType"); Optional
     std::wstring jsonString = requestJson.serialize();
 
     COPYDATASTRUCT cds;
@@ -179,7 +181,7 @@ HRESULT CStockExecutorDlg::OnButtonConnect(IHTMLElement* /*pElement*/)
     cds.lpData = (PVOID)jsonString.c_str();
 
     SendMessage(WM_COPYDATA, 0, (LPARAM)&cds);
-    SendMessage(WM_COMMAND, IDC_BTN_CONNECT, 0);
+    SendMessage(WM_COMMAND, IDC_BTN_LOGIN, 0);
     return S_OK;
 }
 
@@ -225,63 +227,44 @@ HRESULT CStockExecutorDlg::OnButtonCancel(IHTMLElement* /*pElement*/)
 #endif
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-void CStockExecutorDlg::OnConnect()
+// 로그인 시작
+void CStockExecutorDlg::OnLogin()
 {
-    m_wmcaMsgSender.Connect(GetSafeHwnd());
+    // 서버접속
+    if (m_xingMsgSender.Connect(GetSafeHwnd()) == FALSE) {
+        return;
+    }
+    // 로그인
+    m_xingMsgSender.Login(GetSafeHwnd());
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 void CStockExecutorDlg::OnDisconnect()
 {
-    m_wmcaMsgSender.Disconnect();
+    //m_wmcaMsgSender.Disconnect();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 void CStockExecutorDlg::OnIsConnected()
 {
-    BOOL isConnected = m_wmcaMsgSender.IsConnected();
-    m_wmcaMsgReceiver.ConnectedStatus(isConnected);
+    //BOOL isConnected = m_wmcaMsgSender.IsConnected();
+    //m_wmcaMsgReceiver.ConnectedStatus(isConnected);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 void CStockExecutorDlg::OnInquireCurrentPrice()
 {
-    m_wmcaMsgSender.InquireCurrentPrice(GetSafeHwnd());
+    //m_wmcaMsgSender.InquireCurrentPrice(GetSafeHwnd());
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-//	wmca.dll로 부터 수신한 윈도우 메시지를 통해 각 이벤트 핸들러로 분기합니다
+//	XingAPI.dll로 부터 수신한 윈도우 메시지를 통해 각 이벤트 핸들러
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-LRESULT CStockExecutorDlg::OnWmcaEvent(WPARAM dwMessageType, LPARAM lParam)
+LRESULT CStockExecutorDlg::OnWmLoginEvent(WPARAM wParam, LPARAM lParam)
 {
-    switch (dwMessageType) {
-    case CA_CONNECTED:          //로그인 성공
-        m_wmcaMsgReceiver.Connected((LOGINBLOCK*)lParam);
-        break;
-    case CA_DISCONNECTED:       //접속 끊김
-        m_wmcaMsgReceiver.Disconnected();
-        break;
-    case CA_SOCKETERROR:        //통신 오류 발생
-        m_wmcaMsgReceiver.SocketError((int)lParam);
-        break;
-    case CA_RECEIVEDATA:        //서비스 응답 수신(TR)
-        m_wmcaMsgReceiver.ReceiveData((OUTDATABLOCK*)lParam);
-        break;
-    case CA_RECEIVESISE:        //실시간 데이터 수신(BC)
-        m_wmcaMsgReceiver.ReceiveSise((OUTDATABLOCK*)lParam);
-        break;
-    case CA_RECEIVEMESSAGE:     //상태 메시지 수신 (입력값이 잘못되었을 경우 문자열형태로 설명이 수신됨)
-        m_wmcaMsgReceiver.ReceiveMessage((OUTDATABLOCK*)lParam);
-        break;
-    case CA_RECEIVECOMPLETE:    //서비스 처리 완료
-        m_wmcaMsgReceiver.ReceiveComplete((OUTDATABLOCK*)lParam);
-        break;
-    case CA_RECEIVEERROR:       //서비스 처리중 오류 발생 (입력값 오류등)
-        m_wmcaMsgReceiver.ReceiveError((OUTDATABLOCK*)lParam);
-        break;
-    default:
-        break;
-    }
 
-    return TRUE;
+
+    m_xingMsgReceiver.LoginEvent((LPCSTR)wParam, (LPCSTR)lParam);
+
+    return 0L;
 }

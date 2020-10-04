@@ -3,19 +3,24 @@
 //////////////////////////////////////////////////////////////////////
 #pragma once
 
-#include "wmca_intf.h"
+#include <windows.h>
+#include "xing_api.h"
 
-class CWmcaMsgSender
+class CXingMsgSender
 {
 public:
     HWND m_hWnd;
     std::wstring m_strData;
 
-    void Connect(HWND hWnd);
+    CXingMsgSender();
+    ~CXingMsgSender() = default;
+
+    BOOL Connect(HWND hWnd);
+    BOOL Login(HWND hWnd);
     void Disconnect();
     BOOL IsConnected();
     void InquireCurrentPrice(HWND hWnd);
 private:
-    CWmcaIntf m_wmca;
+    IXingAPI m_xingAPI;
 };
 

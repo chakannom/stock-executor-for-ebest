@@ -1,11 +1,8 @@
-#define _UNICODE
 #include "core/framework.h"
 #include "util/string_util.h"
 #include "util/datetime_util.h"
-#include "trio_inv.h"
-#include "wmca_intf.h"
 #include "response_supporter.h"
-
+/*
 web::json::value CResponseSupporter::GetConnectedData(LOGINBLOCK* pLogin)
 {
     web::json::value json = web::json::value::object();
@@ -179,3 +176,4 @@ web::json::value CResponseSupporter::GetConnectedStatusData(BOOL isConnected)
 
     return json;
 }
+*/

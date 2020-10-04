@@ -42,9 +42,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <None Include="res\stockexecutor.rc2">
-      <Filter>리소스 파일</Filter>
-    </None>
     <None Include=".gitignore" />
     <None Include="README.md" />
     <None Include="LICENSE" />
@@ -54,11 +51,9 @@
     <None Include="res\debug\stock-executor.html">
       <Filter>리소스 파일\debug</Filter>
     </None>
-  </ItemGroup>
-  <ItemGroup>
-    <ResourceCompile Include="res\stockexecutor.rc">
+    <None Include="res\stock-executor.rc2">
       <Filter>리소스 파일</Filter>
-    </ResourceCompile>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\stock-executor.ico">
@@ -78,32 +73,14 @@
     <ClInclude Include="src\core\targetver.h">
       <Filter>헤더 파일\core</Filter>
     </ClInclude>
-    <ClInclude Include="src\helper\wmca_intf.h">
-      <Filter>헤더 파일\helper</Filter>
-    </ClInclude>
     <ClInclude Include="src\dialog\stock-executor-dlg.h">
       <Filter>헤더 파일\dialog</Filter>
     </ClInclude>
     <ClInclude Include="src\dialog\about-dlg.h">
       <Filter>헤더 파일\dialog</Filter>
     </ClInclude>
-    <ClInclude Include="src\helper\trio_ord.h">
-      <Filter>헤더 파일\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="src\helper\trio_inv.h">
-      <Filter>헤더 파일\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="src\helper\wmca_msg_sender.h">
-      <Filter>헤더 파일\helper</Filter>
-    </ClInclude>
-    <ClInclude Include="src\helper\wmca_msg_receiver.h">
-      <Filter>헤더 파일\helper</Filter>
-    </ClInclude>
     <ClInclude Include="src\util\string_util.h">
       <Filter>헤더 파일\util</Filter>
-    </ClInclude>
-    <ClInclude Include="src\helper\trio_def.h">
-      <Filter>헤더 파일\helper</Filter>
     </ClInclude>
     <ClInclude Include="src\helper\response_supporter.h">
       <Filter>헤더 파일\helper</Filter>
@@ -111,13 +88,19 @@
     <ClInclude Include="src\util\datetime_util.h">
       <Filter>헤더 파일\util</Filter>
     </ClInclude>
+    <ClInclude Include="src\helper\xing_api.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\xing_msg_sender.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\xing_msg_receiver.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stock-executor.cpp">
       <Filter>소스 파일</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\wmca_intf.cpp">
-      <Filter>소스 파일\helper</Filter>
     </ClCompile>
     <ClCompile Include="src\dialog\stock-executor-dlg.cpp">
       <Filter>소스 파일\dialog</Filter>
@@ -125,14 +108,19 @@
     <ClCompile Include="src\dialog\about-dlg.cpp">
       <Filter>소스 파일\dialog</Filter>
     </ClCompile>
-    <ClCompile Include="src\helper\wmca_msg_sender.cpp">
-      <Filter>소스 파일\helper</Filter>
-    </ClCompile>
-    <ClCompile Include="src\helper\wmca_msg_receiver.cpp">
-      <Filter>소스 파일\helper</Filter>
-    </ClCompile>
     <ClCompile Include="src\helper\response_supporter.cpp">
       <Filter>소스 파일\helper</Filter>
     </ClCompile>
+    <ClCompile Include="src\helper\xing_msg_sender.cpp">
+      <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper\xing_msg_receiver.cpp">
+      <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\stock-executor.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
   </ItemGroup>
 </Project>

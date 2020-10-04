@@ -1,6 +1,5 @@
 // about-dlg.cpp: 구현 파일
 //
-#define _UNICODE
 #include "core/framework.h"
 #include "core/resource.h"
 #include "about-dlg.h"

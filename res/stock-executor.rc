@@ -53,7 +53,7 @@ BEGIN
     "\r\n"
     "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)\r\n"
     "LANGUAGE 18, 1\r\n"
-    "#include ""stockexecutor.rc2""  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.\r\n"
+    "#include ""stock-executor.rc2""  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.\r\n"
     "#include ""l.KOR\\afxres.rc""      // 표준 구성 요소\r\n"
     "#if !defined(_AFXDLL)\r\n"
     "#include ""l.KOR\\afxribbon.rc""   // MFC 리본 및 컨트롤 막대 리소스\r\n"
@@ -82,11 +82,11 @@ IDR_MAINFRAME           ICON                    "stock-executor.ico"
 
 IDD_ABOUTBOX DIALOGEX 0, 0, 170, 62
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "stock-executor 정보"
+CAPTION "stock-executor-for-ebest 정보"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
     ICON            IDR_MAINFRAME,IDC_STATIC,14,14,21,20
-    LTEXT           "stock-executor, 버전 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
+    LTEXT           "stock-executor-for-ebest, 버전 1.0",IDC_STATIC,42,14,114,8,SS_NOPREFIX
     LTEXT           "Copyright (C) 2020",IDC_STATIC,42,26,114,8
     DEFPUSHBUTTON   "확인",IDOK,113,41,50,14,WS_GROUP
 END
@@ -94,7 +94,7 @@ END
 IDD_STOCKEXECUTOR_DIALOG DIALOGEX 0, 0, 319, 199
 STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
 EXSTYLE WS_EX_APPWINDOW
-CAPTION "STOCK-EXECUTOR"
+CAPTION "STOCK-EXECUTOR-FOR-EBEST"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
 END
@@ -136,12 +136,12 @@ BEGIN
         BLOCK "041204B0"
         BEGIN
             VALUE "CompanyName", "TODO: <회사 이름>"
-            VALUE "FileDescription", "stock-executor"
+            VALUE "FileDescription", "stock-executor-for-ebest"
             VALUE "FileVersion", "1.0.0.1"
-            VALUE "InternalName", "stock-executor.exe"
+            VALUE "InternalName", "stock-executor-for-ebest.exe"
             VALUE "LegalCopyright", "TODO: (c) <회사 이름>.  All rights reserved."
-            VALUE "OriginalFilename", "stock-executor.exe"
-            VALUE "ProductName", "TODO: <제품 이름>"
+            VALUE "OriginalFilename", "stock-executor-for-ebest.exe"
+            VALUE "ProductName", "Stock-Executor for EBEST"
             VALUE "ProductVersion", "1.0.0.1"
         END
     END
@@ -197,7 +197,7 @@ END
 
 STRINGTABLE
 BEGIN
-    IDS_ABOUTBOX            "stock-executor 정보(&A)..."
+    IDS_ABOUTBOX            "stock-executor-for-ebest 정보(&A)..."
 END
 
 #endif    // 한국어(대한민국) resources
@@ -217,7 +217,7 @@ END
 
 #if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_KOR)
 LANGUAGE 18, 1
-#include "stockexecutor.rc2"  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.
+#include "stock-executor.rc2"  // Microsoft Visual C++ 이외의 다른 도구에서 편집한 리소스입니다.
 #include "l.KOR\afxres.rc"      // 표준 구성 요소
 #if !defined(_AFXDLL)
 #include "l.KOR\afxribbon.rc"   // MFC 리본 및 컨트롤 막대 리소스

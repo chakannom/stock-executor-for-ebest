@@ -116,10 +116,10 @@
     <None Include="README.md" />
     <None Include="res\debug\stock-executor.html" />
     <None Include="res\release\stock-executor.html" />
-    <None Include="res\stockexecutor.rc2" />
+    <None Include="res\stock-executor.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="res\stockexecutor.rc" />
+    <ResourceCompile Include="res\stock-executor.rc" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\stock-executor.ico" />
@@ -131,12 +131,9 @@
     <ClInclude Include="src\dialog\about-dlg.h" />
     <ClInclude Include="src\dialog\stock-executor-dlg.h" />
     <ClInclude Include="src\helper\response_supporter.h" />
-    <ClInclude Include="src\helper\trio_def.h" />
-    <ClInclude Include="src\helper\trio_inv.h" />
-    <ClInclude Include="src\helper\trio_ord.h" />
-    <ClInclude Include="src\helper\wmca_msg_sender.h" />
-    <ClInclude Include="src\helper\wmca_intf.h" />
-    <ClInclude Include="src\helper\wmca_msg_receiver.h" />
+    <ClInclude Include="src\helper\xing_api.h" />
+    <ClInclude Include="src\helper\xing_msg_receiver.h" />
+    <ClInclude Include="src\helper\xing_msg_sender.h" />
     <ClInclude Include="src\stock-executor.h" />
     <ClInclude Include="src\util\datetime_util.h" />
     <ClInclude Include="src\util\string_util.h" />
@@ -145,9 +142,8 @@
     <ClCompile Include="src\dialog\about-dlg.cpp" />
     <ClCompile Include="src\dialog\stock-executor-dlg.cpp" />
     <ClCompile Include="src\helper\response_supporter.cpp" />
-    <ClCompile Include="src\helper\wmca_msg_sender.cpp" />
-    <ClCompile Include="src\helper\wmca_intf.cpp" />
-    <ClCompile Include="src\helper\wmca_msg_receiver.cpp" />
+    <ClCompile Include="src\helper\xing_msg_receiver.cpp" />
+    <ClCompile Include="src\helper\xing_msg_sender.cpp" />
     <ClCompile Include="src\stock-executor.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

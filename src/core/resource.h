@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++¿¡¼­ »ı¼ºÇÑ Æ÷ÇÔ ÆÄÀÏÀÔ´Ï´Ù.
-// C:\Users\chakannom\Development\workspace\visualstudio\stock-executor-for-ebest\res\stockexecutor.rc¿¡¼­ »ç¿ëµÇ°í ÀÖ½À´Ï´Ù.
+// Microsoft Visual C++ì—ì„œ ìƒì„±í•œ í¬í•¨ íŒŒì¼ì…ë‹ˆë‹¤.
+// C:\Users\chakannom\Development\workspace\visualstudio\stock-executor-for-ebest\res\stock-executor.rcì—ì„œ ì‚¬ìš©ë˜ê³  ìˆìŠµë‹ˆë‹¤.
 //
 #define IDM_ABOUTBOX                    0x0010
 #define IDD_ABOUTBOX                    100
@@ -8,7 +8,7 @@
 #define IDD_STOCKEXECUTOR_DIALOG        102
 #define IDR_HTML_STOCKEXECUTOR_DIALOG   104
 #define IDR_MAINFRAME                   128
-#define IDC_BTN_CONNECT                 1000
+#define IDC_BTN_LOGIN			        1000
 #define IDC_BTN_DISCONNECT              1001
 #define IDC_BTN_ISCONNECTED             1002
 #define IDC_BTN_INQUIRECURRENTPRICE     1003
