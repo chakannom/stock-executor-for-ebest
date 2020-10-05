@@ -20,7 +20,7 @@ BEGIN_DHTML_EVENT_MAP(CStockExecutorDlg)
 #ifdef _DEBUG
     // for debugging
     DHTML_EVENT_ONCLICK(_T("ButtonLogin"), OnButtonLogin)
-    DHTML_EVENT_ONCLICK(_T("ButtonDisconnect"), OnButtonDisconnect)
+    DHTML_EVENT_ONCLICK(_T("ButtonLogout"), OnButtonLogout)
     DHTML_EVENT_ONCLICK(_T("ButtonIsConnected"), OnButtonIsConnected)
     DHTML_EVENT_ONCLICK(_T("ButtonInquireCurrentPrice"), OnButtonInquireCurrentPrice)
     DHTML_EVENT_ONCLICK(_T("ButtonOK"), OnButtonOK)
@@ -46,12 +46,14 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
 
     // for Executor
     ON_BN_CLICKED(IDC_BTN_LOGIN, OnLogin)
-    ON_BN_CLICKED(IDC_BTN_DISCONNECT, OnDisconnect)
+    ON_BN_CLICKED(IDC_BTN_LOGOUT, OnLogout)
     ON_BN_CLICKED(IDC_BTN_ISCONNECTED, OnIsConnected)
     ON_BN_CLICKED(IDC_BTN_INQUIRECURRENTPRICE, OnInquireCurrentPrice)
 
     // for XingAPIEvent
     ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
+    ON_MESSAGE(WM_USER + XM_CM_ISCONNECTED, OnWmIsConnectedEvent)
+    ON_MESSAGE(WM_USER + XM_CM_ERROR, OnWmErrorEvent)
 
 END_MESSAGE_MAP()
 
@@ -169,9 +171,9 @@ HCURSOR CStockExecutorDlg::OnQueryDragIcon()
 HRESULT CStockExecutorDlg::OnButtonLogin(IHTMLElement* /*pElement*/)
 {
     web::json::value requestJson;
-    //requestJson[L"id"] = web::json::value::string(L"id");
-    //requestJson[L"pw"] = web::json::value::string(L"pw");
-    //requestJson[L"certPw"] = web::json::value::string(L"certPw");
+    requestJson[L"id"] = web::json::value::string(L"id");
+    requestJson[L"pw"] = web::json::value::string(L"pw");
+    requestJson[L"certPw"] = web::json::value::string(L"certPw");
     //requestJson[L"serverType"] = web::json::value::string(L"serverType"); Optional
     std::wstring jsonString = requestJson.serialize();
 
@@ -185,9 +187,9 @@ HRESULT CStockExecutorDlg::OnButtonLogin(IHTMLElement* /*pElement*/)
     return S_OK;
 }
 
-HRESULT CStockExecutorDlg::OnButtonDisconnect(IHTMLElement* /*pElement*/)
+HRESULT CStockExecutorDlg::OnButtonLogout(IHTMLElement* /*pElement*/)
 {
-    SendMessage(WM_COMMAND, IDC_BTN_DISCONNECT, 0);
+    SendMessage(WM_COMMAND, IDC_BTN_LOGOUT, 0);
     return S_OK;
 }
 
@@ -239,16 +241,16 @@ void CStockExecutorDlg::OnLogin()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-void CStockExecutorDlg::OnDisconnect()
+void CStockExecutorDlg::OnLogout()
 {
-    //m_wmcaMsgSender.Disconnect();
+    m_xingMsgSender.Logout(GetSafeHwnd());
+    m_xingMsgSender.Disconnect();
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 void CStockExecutorDlg::OnIsConnected()
 {
-    //BOOL isConnected = m_wmcaMsgSender.IsConnected();
-    //m_wmcaMsgReceiver.ConnectedStatus(isConnected);
+    m_xingMsgSender.IsConnected(GetSafeHwnd());
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -262,9 +264,18 @@ void CStockExecutorDlg::OnInquireCurrentPrice()
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 LRESULT CStockExecutorDlg::OnWmLoginEvent(WPARAM wParam, LPARAM lParam)
 {
+    m_xingMsgReceiver.LoginEvent(atoi((LPCSTR)wParam), (LPCSTR)lParam);
+    return 0L;
+}
 
+LRESULT CStockExecutorDlg::OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam)
+{
+    m_xingMsgReceiver.IsConnectedEvent(((BOOL)wParam) == TRUE);
+    return 0L;
+}
 
-    m_xingMsgReceiver.LoginEvent((LPCSTR)wParam, (LPCSTR)lParam);
-
+LRESULT CStockExecutorDlg::OnWmErrorEvent(WPARAM wParam, LPARAM lParam)
+{
+    m_xingMsgReceiver.ErrorEvent((int)wParam, (LPCSTR)lParam);
     return 0L;
 }

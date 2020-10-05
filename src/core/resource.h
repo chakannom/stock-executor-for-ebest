@@ -8,8 +8,8 @@
 #define IDD_STOCKEXECUTOR_DIALOG        102
 #define IDR_HTML_STOCKEXECUTOR_DIALOG   104
 #define IDR_MAINFRAME                   128
-#define IDC_BTN_LOGIN			        1000
-#define IDC_BTN_DISCONNECT              1001
+#define IDC_BTN_LOGIN					1000
+#define IDC_BTN_LOGOUT					1001
 #define IDC_BTN_ISCONNECTED             1002
 #define IDC_BTN_INQUIRECURRENTPRICE     1003
 

@@ -25,7 +25,7 @@ protected:
 #ifdef _DEBUG
     // Action functions for debugging
     HRESULT OnButtonLogin(IHTMLElement* pElement);
-    HRESULT OnButtonDisconnect(IHTMLElement* pElement);
+    HRESULT OnButtonLogout(IHTMLElement* pElement);
     HRESULT OnButtonIsConnected(IHTMLElement* pElement);
     HRESULT OnButtonInquireCurrentPrice(IHTMLElement* pElement);
     HRESULT OnButtonOK(IHTMLElement *pElement);
@@ -45,12 +45,14 @@ protected:
 
     // Executor functions
     afx_msg void OnLogin();
-    afx_msg void OnDisconnect();
+    afx_msg void OnLogout();
     afx_msg void OnIsConnected();
     afx_msg void OnInquireCurrentPrice();
 
     // XingAPI functions
     afx_msg LRESULT OnWmLoginEvent(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnWmErrorEvent(WPARAM wParam, LPARAM lParam);
 
     DECLARE_MESSAGE_MAP()
     DECLARE_DHTML_EVENT_MAP()

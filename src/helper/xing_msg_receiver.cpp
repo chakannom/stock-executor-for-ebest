@@ -3,19 +3,32 @@
 #include "response_supporter.h"
 #include "xing_msg_receiver.h"
 
-void CXingMsgReceiver::LoginEvent(LPCSTR pszCode, LPCSTR pszMsg)
+void CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
 {
-    CStringW strMsg;
-    strMsg.Format(L"[%s] %s", CStringW(pszCode), CStringW(pszMsg));
-
-    if (atoi(pszCode) == 0) {
+    if (nCode == 0) {
         // 로그인 성공
-        MessageBox(NULL, strMsg, L"로그인 성공", MB_ICONINFORMATION);
+        CStringW strMsg;
+        strMsg.Format(L"[%d] %s", nCode, CStringW(pszMsg));
+        MessageBox(NULL, strMsg, L"Login", MB_ICONINFORMATION);
     }
     else {
         // 로그인 실패
-        MessageBox(NULL, strMsg, L"로그인 실패", MB_ICONSTOP);
+        ErrorEvent(nCode, pszMsg);
     }
+}
+
+void CXingMsgReceiver::IsConnectedEvent(bool isConnected)
+{
+    CStringW strMsg = isConnected ? L"TRUE" : L"FALSE";
+    MessageBox(NULL, strMsg, L"IsConnected", MB_ICONINFORMATION);
+}
+
+void CXingMsgReceiver::ErrorEvent(int nErrorCode, LPCSTR pszErrorMsg)
+{
+    CStringW strMsg;
+    strMsg.Format(L"[%d] %s", nErrorCode, CStringW(pszErrorMsg));
+
+    MessageBox(NULL, strMsg, L"Error", MB_ICONSTOP);
 }
 
 void CXingMsgReceiver::processMessage(std::function<void()> generateMessage)

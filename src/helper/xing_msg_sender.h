@@ -17,10 +17,13 @@ public:
 
     BOOL Connect(HWND hWnd);
     BOOL Login(HWND hWnd);
+    void Logout(HWND hWnd);
     void Disconnect();
-    BOOL IsConnected();
+    BOOL IsConnected(HWND hWnd);
     void InquireCurrentPrice(HWND hWnd);
 private:
     IXingAPI m_xingAPI;
+
+    void ErrorMessage(HWND hWnd);
 };
 

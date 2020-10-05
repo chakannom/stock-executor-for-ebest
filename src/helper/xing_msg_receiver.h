@@ -5,8 +5,9 @@
 class CXingMsgReceiver
 {
 public:
-    void LoginEvent(LPCSTR pszCode, LPCSTR pszMsg);
-
+    void LoginEvent(int nCode, LPCSTR pszMsg);
+    void IsConnectedEvent(bool isConnected);
+    void ErrorEvent(int nErrorCode, LPCSTR pszErrorMsg);
 private:
     web::json::value resJson = web::json::value::object();
     bool onlyDisconnect = true;

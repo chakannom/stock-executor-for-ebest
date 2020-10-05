@@ -14,6 +14,9 @@
 #define 	XM_RECEIVE_REAL_DATA_CHART	10		// 실시간 자동 등록한 후 차트 조회 시, 지표실시간 데이터를 받았을 때  : by zzin 2013.08.14  
 #define 	XM_RECEIVE_REAL_DATA_SEARCH	11		// 종목검색 실시간 데이터를 받았을 때 			: by 2017.11.24 LSW  
 
+// Custom message by ChaKanNom
+#define     XM_CM_ERROR                 51
+#define     XM_CM_ISCONNECTED           52
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------

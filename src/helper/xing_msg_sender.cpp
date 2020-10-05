@@ -36,9 +36,7 @@ BOOL CXingMsgSender::Connect(HWND hWnd)
                                         //  -> 이럴 경우에 한번에 보내는 Packet Size를 지정하여 그 이상 되는 Packet은 여러번에 걸쳐 전송
     );
     if (bResult == FALSE) {
-        int nErrorCode = m_xingAPI.GetLastError();
-        CStringW strMsg(m_xingAPI.GetErrorMessage(nErrorCode));
-        MessageBox(hWnd, strMsg, L"서버접속실패", MB_ICONSTOP);
+        ErrorMessage(hWnd);
         return FALSE;
     }
     return TRUE;
@@ -69,23 +67,27 @@ BOOL CXingMsgSender::Login(HWND hWnd)
         FALSE                           // 로그인 중에 공인인증 에러가 발생시 에러메시지 표시여부
     );
     if (bResult == FALSE) {
-        int nErrorCode = m_xingAPI.GetLastError();
-        CStringW strMsg(m_xingAPI.GetErrorMessage(nErrorCode));
-        MessageBox(hWnd, strMsg, L"로그인 실패", MB_ICONSTOP);
+        ErrorMessage(hWnd);
         return FALSE;
     }
     return TRUE;
 }
 
-void CXingMsgSender::Disconnect()
+void CXingMsgSender::Logout(HWND hWnd)
 {
-    //m_wmca.Disconnect();
+    m_xingAPI.Logout(hWnd);
 }
 
-BOOL CXingMsgSender::IsConnected()
+void CXingMsgSender::Disconnect()
 {
-    //return m_wmca.IsConnected();
-    return false;
+    m_xingAPI.Disconnect();
+}
+
+BOOL CXingMsgSender::IsConnected(HWND hWnd)
+{
+    BOOL isConnected = m_xingAPI.IsConnected();
+    SendMessageW(hWnd, WM_USER + XM_CM_ISCONNECTED, isConnected, NULL);
+    return isConnected;
 }
 
 void CXingMsgSender::InquireCurrentPrice(HWND hWnd)
@@ -111,4 +113,11 @@ void CXingMsgSender::InquireCurrentPrice(HWND hWnd)
     //    sizeof Tc1101InBlock    //입력 구조체 크기입니다
     //                            //현재가를 포함한 투자정보 조회는 계좌번호와 무관하므로 계좌번호 인덱스를 지정하지 않습니다.
     //);
+}
+
+void CXingMsgSender::ErrorMessage(HWND hWnd)
+{
+    int nErrorCode = m_xingAPI.GetLastError();
+    CStringA strMsg = m_xingAPI.GetErrorMessage(nErrorCode);
+    SendMessageW(hWnd, WM_USER + XM_CM_ERROR, (WPARAM)nErrorCode, (LPARAM)strMsg.GetString());
 }
