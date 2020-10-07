@@ -22,6 +22,7 @@ BEGIN_DHTML_EVENT_MAP(CStockExecutorDlg)
     DHTML_EVENT_ONCLICK(_T("ButtonLogin"), OnButtonLogin)
     DHTML_EVENT_ONCLICK(_T("ButtonLogout"), OnButtonLogout)
     DHTML_EVENT_ONCLICK(_T("ButtonIsConnected"), OnButtonIsConnected)
+    DHTML_EVENT_ONCLICK(_T("ButtonStocksByGubun"), OnButtonStocksByGubun)
     DHTML_EVENT_ONCLICK(_T("ButtonInquireCurrentPrice"), OnButtonInquireCurrentPrice)
     DHTML_EVENT_ONCLICK(_T("ButtonOK"), OnButtonOK)
     DHTML_EVENT_ONCLICK(_T("ButtonCancel"), OnButtonCancel)
@@ -48,11 +49,13 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
     ON_BN_CLICKED(IDC_BTN_LOGIN, OnLogin)
     ON_BN_CLICKED(IDC_BTN_LOGOUT, OnLogout)
     ON_BN_CLICKED(IDC_BTN_ISCONNECTED, OnIsConnected)
+    ON_BN_CLICKED(IDC_BTN_STOCKSBYGUBUN, OnStocksByGubun)
     ON_BN_CLICKED(IDC_BTN_INQUIRECURRENTPRICE, OnInquireCurrentPrice)
 
     // for XingAPIEvent
     ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
     ON_MESSAGE(WM_USER + XM_CM_ISCONNECTED, OnWmIsConnectedEvent)
+    ON_MESSAGE(WM_USER + XM_RECEIVE_DATA, OnWmReceiveDataEvent)
     ON_MESSAGE(WM_USER + XM_CM_ERROR, OnWmErrorEvent)
 
 END_MESSAGE_MAP()
@@ -199,6 +202,22 @@ HRESULT CStockExecutorDlg::OnButtonIsConnected(IHTMLElement* /*pElement*/)
     return S_OK;
 }
 
+HRESULT CStockExecutorDlg::OnButtonStocksByGubun(IHTMLElement* /*pElement*/)
+{
+    web::json::value requestJson;
+    requestJson[L"gubun"] = web::json::value::string(L"1"); // ALL: "0", KOSPI: "1" | KOSDAQ: "2"
+    std::wstring jsonString = requestJson.serialize();
+
+    COPYDATASTRUCT cds;
+    cds.dwData = WM_STOCK_EXECUTOR_SETSTRINGVARIABLE;
+    cds.cbData = jsonString.size();
+    cds.lpData = (PVOID)jsonString.c_str();
+
+    SendMessage(WM_COPYDATA, 0, (LPARAM)&cds);
+    SendMessage(WM_COMMAND, IDC_BTN_STOCKSBYGUBUN, 0);
+    return S_OK;
+}
+
 HRESULT CStockExecutorDlg::OnButtonInquireCurrentPrice(IHTMLElement* /*pElement*/)
 {
     web::json::value requestJson;
@@ -254,6 +273,12 @@ void CStockExecutorDlg::OnIsConnected()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+void CStockExecutorDlg::OnStocksByGubun()
+{
+    m_xingMsgSender.StocksByGubun(GetSafeHwnd());
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 void CStockExecutorDlg::OnInquireCurrentPrice()
 {
     //m_wmcaMsgSender.InquireCurrentPrice(GetSafeHwnd());
@@ -273,6 +298,29 @@ LRESULT CStockExecutorDlg::OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam)
     m_xingMsgReceiver.IsConnectedEvent(((BOOL)wParam) == TRUE);
     return 0L;
 }
+
+LRESULT CStockExecutorDlg::OnWmReceiveDataEvent(WPARAM wParam, LPARAM lParam)
+{
+    if (wParam == REQUEST_DATA) {
+        // Data를 받음
+        m_xingMsgReceiver.ReceiveRequestDataEvent((LPRECV_PACKET)lParam);
+    }
+    else if (wParam == MESSAGE_DATA)  {
+        // 메시지를 받음
+        m_xingMsgReceiver.ReceiveMessageDataEvent((LPMSG_PACKET)lParam);
+    }
+    else if (wParam == SYSTEM_ERROR_DATA) {
+        // System Error를 받음
+        m_xingMsgReceiver.ReceiveSystemErrorDataEvent((LPMSG_PACKET)lParam);
+    }
+    else if (wParam == RELEASE_DATA) {
+        // Release Data를 받음
+        m_xingMsgReceiver.ReceiveReleaseDataEvent((int)lParam);
+    }
+
+    return 0L;
+}
+
 
 LRESULT CStockExecutorDlg::OnWmErrorEvent(WPARAM wParam, LPARAM lParam)
 {

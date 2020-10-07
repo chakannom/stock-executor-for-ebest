@@ -1,5 +1,5 @@
 #include "core/framework.h"
-#include "util/string_util.h"
+#include "packet/t8436.h"
 #include "response_supporter.h"
 #include "xing_msg_receiver.h"
 
@@ -19,8 +19,41 @@ void CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
 
 void CXingMsgReceiver::IsConnectedEvent(bool isConnected)
 {
-    CStringW strMsg = isConnected ? L"TRUE" : L"FALSE";
-    MessageBox(NULL, strMsg, L"IsConnected", MB_ICONINFORMATION);
+    auto generateMessage = [this, isConnected]() {
+        resJson[L"code"] = web::json::value::string(L"00000");
+        resJson[L"message"] = web::json::value::string(L"It checked the status.");
+        resJson[L"data"] = CResponseSupporter::GetConnectedStatus(isConnected);
+    };
+
+    processMessage(generateMessage);
+}
+
+void CXingMsgReceiver::ReceiveRequestDataEvent(LPRECV_PACKET pRpData)
+{
+    if (strcmp(pRpData->szTrCode, NAME_t8436) == 0) {
+        int nOutBlockCount = pRpData->nDataLength / sizeof(t8436OutBlock);
+        LPt8436OutBlock pT8436OutBlock = (LPt8436OutBlock)pRpData->lpData;
+        resJson[L"data"][L"stocks"] = CResponseSupporter::GetStocksByGubun(pT8436OutBlock, nOutBlockCount);
+    }
+}
+
+void CXingMsgReceiver::ReceiveMessageDataEvent(LPMSG_PACKET pMsg)
+{
+    resJson[L"message"] = web::json::value::string(L"completed.");
+}
+
+void CXingMsgReceiver::ReceiveSystemErrorDataEvent(LPMSG_PACKET pErrorMsg)
+{
+}
+
+void CXingMsgReceiver::ReceiveReleaseDataEvent(int nRequestID)
+{
+    // 호출 완료시점에 처리하는 부분
+    auto generateMessage = [this, nRequestID]() {
+        resJson[L"code"] = web::json::value::string(L"00000");
+    };
+
+    processMessage(generateMessage);
 }
 
 void CXingMsgReceiver::ErrorEvent(int nErrorCode, LPCSTR pszErrorMsg)

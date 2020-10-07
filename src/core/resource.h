@@ -11,7 +11,8 @@
 #define IDC_BTN_LOGIN					1000
 #define IDC_BTN_LOGOUT					1001
 #define IDC_BTN_ISCONNECTED             1002
-#define IDC_BTN_INQUIRECURRENTPRICE     1003
+#define IDC_BTN_STOCKSBYGUBUN           1003
+#define IDC_BTN_INQUIRECURRENTPRICE     1004
 
 // Next default values for new objects
 // 

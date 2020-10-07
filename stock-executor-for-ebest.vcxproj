@@ -130,12 +130,15 @@
     <ClInclude Include="src\core\targetver.h" />
     <ClInclude Include="src\dialog\about-dlg.h" />
     <ClInclude Include="src\dialog\stock-executor-dlg.h" />
+    <ClInclude Include="src\helper\packet\t1101.h" />
+    <ClInclude Include="src\helper\packet\t8436.h" />
     <ClInclude Include="src\helper\response_supporter.h" />
     <ClInclude Include="src\helper\xing_api.h" />
     <ClInclude Include="src\helper\xing_msg_receiver.h" />
     <ClInclude Include="src\helper\xing_msg_sender.h" />
     <ClInclude Include="src\stock-executor.h" />
     <ClInclude Include="src\util\datetime_util.h" />
+    <ClInclude Include="src\util\packet_util.h" />
     <ClInclude Include="src\util\string_util.h" />
   </ItemGroup>
   <ItemGroup>
@@ -145,6 +148,9 @@
     <ClCompile Include="src\helper\xing_msg_receiver.cpp" />
     <ClCompile Include="src\helper\xing_msg_sender.cpp" />
     <ClCompile Include="src\stock-executor.cpp" />
+    <ClCompile Include="src\util\datetime_util.cpp" />
+    <ClCompile Include="src\util\packet_util.cpp" />
+    <ClCompile Include="src\util\string_util.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

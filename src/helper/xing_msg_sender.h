@@ -20,6 +20,7 @@ public:
     void Logout(HWND hWnd);
     void Disconnect();
     BOOL IsConnected(HWND hWnd);
+    void StocksByGubun(HWND hWnd);
     void InquireCurrentPrice(HWND hWnd);
 private:
     IXingAPI m_xingAPI;

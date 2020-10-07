@@ -1,7 +1,7 @@
 #include <cpprest/json.h>
 
 #include "core/framework.h"
-#include "util/string_util.h"
+#include "packet/t8436.h"
 #include "xing_msg_sender.h"
 
 CXingMsgSender::CXingMsgSender()
@@ -88,6 +88,36 @@ BOOL CXingMsgSender::IsConnected(HWND hWnd)
     BOOL isConnected = m_xingAPI.IsConnected();
     SendMessageW(hWnd, WM_USER + XM_CM_ISCONNECTED, isConnected, NULL);
     return isConnected;
+}
+
+void CXingMsgSender::StocksByGubun(HWND hWnd)
+{
+    web::json::value reqJson = web::json::value::parse(m_strData);
+    CStringA gubun(reqJson.at(L"gubun").as_string().c_str());
+
+    // 주식종목조회 API(t8436) ( BLOCK,HEADTYPE=A )
+    t8436InBlock pckT8436InBlock;
+    FillMemory(&pckT8436InBlock, sizeof(pckT8436InBlock), ' ');
+
+    // 데이터 입력
+    SetPacketData(pckT8436InBlock.gubun, sizeof(pckT8436InBlock.gubun), gubun, DATA_TYPE_STRING);
+
+    // 데이터 전송
+    BOOL bResult = m_xingAPI.Request(
+        hWnd,                       // 데이터를 받을 윈도우, XM_RECEIVE_DATA 으로 온다.
+        NAME_t8436,                 // TR 번호
+        &pckT8436InBlock,           // InBlock 데이터
+        sizeof(pckT8436InBlock),    // InBlock 데이터 크기
+        0,                          // 다음조회 여부 : 다음조회일 경우에 세팅한다.
+        "",                         // 다음조회 Key : Header Type이 B 일 경우엔 이전 조회때 받은 Next Key를 넣어준다.
+        30                          // Timeout(초) : 해당 시간(초)동안 데이터가 오지 않으면 Timeout에 발생한다. XM_TIMEOUT_DATA 메시지가 발생한다.
+    );
+
+    // Request ID가 0보다 작을 경우에는 에러이다.
+    if (bResult < 0) {
+        ErrorMessage(hWnd);
+        //MessageBox("조회실패", "에러", MB_ICONSTOP);
+    }
 }
 
 void CXingMsgSender::InquireCurrentPrice(HWND hWnd)

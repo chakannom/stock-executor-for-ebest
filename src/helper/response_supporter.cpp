@@ -1,14 +1,71 @@
 #include "core/framework.h"
-#include "util/string_util.h"
-#include "util/datetime_util.h"
+#include "packet/t8436.h"
 #include "response_supporter.h"
+
+web::json::value CResponseSupporter::GetConnectedStatus(BOOL isConnected)
+{
+    web::json::value json = web::json::value::object();
+
+    json[L"status"] = web::json::value::boolean(isConnected != FALSE);
+
+    return json;
+}
+
+web::json::value CResponseSupporter::GetStocksByGubun(LPt8436OutBlock pT8436OutBlock, int nBlockCount)
+{
+    web::json::value json = web::json::value::array();
+
+    for (int i = 0; i < nBlockCount; i++) {
+        // data.stocks[].hname: 종목명
+        CStringW hname = GetStringWData(pT8436OutBlock[i].hname, sizeof(pT8436OutBlock[i].hname), DATA_TYPE_STRING);
+        json[i][L"hname"] = web::json::value::string(hname.GetString());
+        // data.stocks[].shcode: 단축코드
+        CStringW shcode = GetStringWData(pT8436OutBlock[i].shcode, sizeof(pT8436OutBlock[i].shcode), DATA_TYPE_STRING);
+        json[i][L"shcode"] = web::json::value::string(shcode.GetString());
+        // data.stocks[].expcode: 확장코드
+        CStringW expcode = GetStringWData(pT8436OutBlock[i].expcode, sizeof(pT8436OutBlock[i].expcode), DATA_TYPE_STRING);
+        json[i][L"expcode"] = web::json::value::string(expcode.GetString());
+        // data.stocks[].etfgubun: ETF구분(1:ETF2:ETN)
+        CStringW etfgubun = GetStringWData(pT8436OutBlock[i].etfgubun, sizeof(pT8436OutBlock[i].etfgubun), DATA_TYPE_STRING);
+        json[i][L"etfgubun"] = web::json::value::string(etfgubun.GetString());
+        // data.stocks[].uplmtprice: 상한가
+        long uplmtprice = GetLongData(pT8436OutBlock[i].uplmtprice, sizeof(pT8436OutBlock[i].uplmtprice), DATA_TYPE_LONG);
+        json[i][L"uplmtprice"] = web::json::value::number(uplmtprice);
+        // data.stocks[].dnlmtprice: 하한가
+        long dnlmtprice = GetLongData(pT8436OutBlock[i].dnlmtprice, sizeof(pT8436OutBlock[i].dnlmtprice), DATA_TYPE_LONG);
+        json[i][L"dnlmtprice"] = web::json::value::number(dnlmtprice);
+        // data.stocks[].jnilclose: 전일가
+        long jnilclose = GetLongData(pT8436OutBlock[i].jnilclose, sizeof(pT8436OutBlock[i].jnilclose), DATA_TYPE_LONG);
+        json[i][L"jnilclose"] = web::json::value::number(jnilclose);
+        // data.stocks[].memedan: 주문수량단위
+        CStringW memedan = GetStringWData(pT8436OutBlock[i].memedan, sizeof(pT8436OutBlock[i].memedan), DATA_TYPE_STRING);
+        json[i][L"memedan"] = web::json::value::string(memedan.GetString());
+        // data.stocks[].recprice: 기준가
+        long recprice = GetLongData(pT8436OutBlock[i].recprice, sizeof(pT8436OutBlock[i].recprice), DATA_TYPE_LONG);
+        json[i][L"recprice"] = web::json::value::number(recprice);
+        // data.stocks[].gubun: 구분(1:코스피2:코스닥)
+        CStringW gubun = GetStringWData(pT8436OutBlock[i].gubun, sizeof(pT8436OutBlock[i].gubun), DATA_TYPE_STRING);
+        json[i][L"gubun"] = web::json::value::string(gubun.GetString());
+        // data.stocks[].bu12gubun: 증권그룹
+        CStringW bu12gubun = GetStringWData(pT8436OutBlock[i].bu12gubun, sizeof(pT8436OutBlock[i].bu12gubun), DATA_TYPE_STRING);
+        json[i][L"bu12gubun"] = web::json::value::string(bu12gubun.GetString());
+        // data.stocks[].spacGubun: 기업인수목적회사여부(Y/N)
+        CStringW spacgubun = GetStringWData(pT8436OutBlock[i].spac_gubun, sizeof(pT8436OutBlock[i].spac_gubun), DATA_TYPE_STRING);
+        json[i][L"spacgubun"] = web::json::value::string(spacgubun.GetString());
+        // data.stocks[].filler: filler(미사용)
+        CStringW filler = GetStringWData(pT8436OutBlock[i].filler, sizeof(pT8436OutBlock[i].filler), DATA_TYPE_STRING);
+        //json[i][L"filler"] = web::json::value::string(filler.GetString());
+    }
+
+    return json;
+}
 /*
 web::json::value CResponseSupporter::GetConnectedData(LOGINBLOCK* pLogin)
 {
     web::json::value json = web::json::value::object();
 
     // data.connectedDate: 접속시간
-    time_t connectedDate = CDateTimeUtil::GetEpochMilli(SCOPY_A(pLogin->pLoginInfo->szDate));
+    time_t connectedDate = GetEpochMilli(SCOPY_A(pLogin->pLoginInfo->szDate));
     json[L"connectedDate"] = web::json::value::number(connectedDate);
 
     // data.username: 접속자ID
@@ -164,15 +221,6 @@ web::json::value CResponseSupporter::GetCurrentPriceSimultaneousQuoteData(Tc1101
     // data.simultaneousQuote.ecnJeqchrate: ECN대비예상체결등락률
     float ecnJeqchrate = strtof(SCOPY_A(pc1101Outblock3->ecn_jeqchrate), nullptr);
     json[L"ecnJeqchrate"] = web::json::value::number(ecnJeqchrate);
-
-    return json;
-}
-
-web::json::value CResponseSupporter::GetConnectedStatusData(BOOL isConnected)
-{
-    web::json::value json = web::json::value::object();
-
-    json[L"status"] = web::json::value::boolean(isConnected != FALSE);
 
     return json;
 }

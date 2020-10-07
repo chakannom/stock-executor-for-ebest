@@ -24,6 +24,9 @@
 #include <afxcontrolbars.h>     // MFC의 리본 및 컨트롤 막대 지원
 #include <afxdhtml.h>        // HTML 대화 상자
 
+#include "util/datetime_util.h"
+#include "util/packet_util.h"
+#include "util/string_util.h"
 
 
 

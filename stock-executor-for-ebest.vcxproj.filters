@@ -40,6 +40,12 @@
     <Filter Include="리소스 파일\debug">
       <UniqueIdentifier>{dd020d2c-48b3-4880-8a97-7045eb82899f}</UniqueIdentifier>
     </Filter>
+    <Filter Include="헤더 파일\helper\packet">
+      <UniqueIdentifier>{f2e162ec-ce5e-4a11-a0d9-ac8eaf5f02bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\util">
+      <UniqueIdentifier>{b546fba8-cca0-4d57-9eaa-caa4c48c6e78}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <None Include=".gitignore" />
@@ -97,6 +103,15 @@
     <ClInclude Include="src\helper\xing_msg_receiver.h">
       <Filter>헤더 파일\helper</Filter>
     </ClInclude>
+    <ClInclude Include="src\helper\packet\t1101.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\packet\t8436.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\packet_util.h">
+      <Filter>헤더 파일\util</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\stock-executor.cpp">
@@ -116,6 +131,15 @@
     </ClCompile>
     <ClCompile Include="src\helper\xing_msg_receiver.cpp">
       <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\packet_util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\datetime_util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\string_util.cpp">
+      <Filter>소스 파일\util</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
