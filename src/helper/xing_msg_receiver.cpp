@@ -5,7 +5,7 @@
 #include "response_supporter.h"
 #include "xing_msg_receiver.h"
 
-void CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
+BOOL CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
 {
     if (nCode == 0) {
         // 로그인 성공
@@ -16,19 +16,23 @@ void CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
         };
 
         processMessage(generateMessage);
+
+        return TRUE;
     }
     else {
         // 로그인 실패
         ErrorEvent(nCode, pszMsg);
+
+        return FALSE;
     }
 }
 
-void CXingMsgReceiver::IsConnectedEvent(bool isConnected)
+void CXingMsgReceiver::IsLoginEvent(bool isLogin)
 {
-    auto generateMessage = [this, isConnected]() {
+    auto generateMessage = [this, isLogin]() {
         resJson[L"code"] = web::json::value::string(L"00000");
         resJson[L"message"] = web::json::value::string(L"It checked the status.");
-        resJson[L"data"] = CResponseSupporter::GetConnectedStatus(isConnected);
+        resJson[L"data"] = CResponseSupporter::GetLoginStatus(isLogin);
     };
 
     processMessage(generateMessage);

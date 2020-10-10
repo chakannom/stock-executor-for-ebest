@@ -85,11 +85,11 @@ void CXingMsgSender::Disconnect()
     m_xingAPI.Disconnect();
 }
 
-BOOL CXingMsgSender::IsConnected(HWND hWnd)
+BOOL CXingMsgSender::IsLogin(HWND hWnd, BOOL bLogin)
 {
-    BOOL isConnected = m_xingAPI.IsConnected();
-    SendMessageW(hWnd, WM_USER + XM_CM_ISCONNECTED, isConnected, NULL);
-    return isConnected;
+    BOOL bResult = m_xingAPI.IsConnected() && bLogin;
+    SendMessageW(hWnd, WM_USER + XM_CM_ISLOGIN, bResult, NULL);
+    return bResult;
 }
 
 void CXingMsgSender::StocksByGubun(HWND hWnd)

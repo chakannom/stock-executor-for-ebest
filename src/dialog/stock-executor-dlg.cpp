@@ -21,7 +21,7 @@ BEGIN_DHTML_EVENT_MAP(CStockExecutorDlg)
     // for debugging
     DHTML_EVENT_ONCLICK(_T("ButtonLogin"), OnButtonLogin)
     DHTML_EVENT_ONCLICK(_T("ButtonLogout"), OnButtonLogout)
-    DHTML_EVENT_ONCLICK(_T("ButtonIsConnected"), OnButtonIsConnected)
+    DHTML_EVENT_ONCLICK(_T("ButtonIsLogin"), OnButtonIsLogin)
     DHTML_EVENT_ONCLICK(_T("ButtonStocksByGubun"), OnButtonStocksByGubun)
     DHTML_EVENT_ONCLICK(_T("ButtonStockCurrentAskingPriceByCode"), OnButtonStockCurrentAskingPriceByCode)
     DHTML_EVENT_ONCLICK(_T("ButtonStockCurrentMarketPriceByCode"), OnButtonStockCurrentMarketPriceByCode)
@@ -32,7 +32,7 @@ END_DHTML_EVENT_MAP()
 
 
 CStockExecutorDlg::CStockExecutorDlg(CWnd* pParent /*=nullptr*/)
-    : CDHtmlDialog(IDD_STOCKEXECUTOR_DIALOG, IDR_HTML_STOCKEXECUTOR_DIALOG, pParent)
+    : CDHtmlDialog(IDD_STOCKEXECUTOR_DIALOG, IDR_HTML_STOCKEXECUTOR_DIALOG, pParent), g_bLogin(FALSE)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -49,14 +49,14 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
     // for Executor
     ON_BN_CLICKED(IDC_BTN_LOGIN, OnLogin)
     ON_BN_CLICKED(IDC_BTN_LOGOUT, OnLogout)
-    ON_BN_CLICKED(IDC_BTN_ISCONNECTED, OnIsConnected)
+    ON_BN_CLICKED(IDC_BTN_ISLOGIN, OnIsLogin)
     ON_BN_CLICKED(IDC_BTN_STOCKSBYGUBUN, OnStocksByGubun)
     ON_BN_CLICKED(IDC_BTN_STOCKCURRENTASKINGPRICE, OnStockCurrentAskingPriceByCode)
     ON_BN_CLICKED(IDC_BTN_STOCKCURRENTMARKETPRICE, OnStockCurrentMarketPriceByCode)
 
     // for XingAPIEvent
     ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
-    ON_MESSAGE(WM_USER + XM_CM_ISCONNECTED, OnWmIsConnectedEvent)
+    ON_MESSAGE(WM_USER + XM_CM_ISLOGIN, OnWmIsLoginEvent)
     ON_MESSAGE(WM_USER + XM_RECEIVE_DATA, OnWmReceiveDataEvent)
     ON_MESSAGE(WM_USER + XM_TIMEOUT_DATA, OnWmTimeoutDataEvent)
     ON_MESSAGE(WM_USER + XM_CM_ERROR, OnWmErrorEvent)
@@ -199,9 +199,9 @@ HRESULT CStockExecutorDlg::OnButtonLogout(IHTMLElement* /*pElement*/)
     return S_OK;
 }
 
-HRESULT CStockExecutorDlg::OnButtonIsConnected(IHTMLElement* /*pElement*/)
+HRESULT CStockExecutorDlg::OnButtonIsLogin(IHTMLElement* /*pElement*/)
 {
-    SendMessage(WM_COMMAND, IDC_BTN_ISCONNECTED, 0);
+    SendMessage(WM_COMMAND, IDC_BTN_ISLOGIN, 0);
     return S_OK;
 }
 
@@ -286,9 +286,9 @@ void CStockExecutorDlg::OnLogout()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-void CStockExecutorDlg::OnIsConnected()
+void CStockExecutorDlg::OnIsLogin()
 {
-    m_xingMsgSender.IsConnected(GetSafeHwnd());
+    m_xingMsgSender.IsLogin(GetSafeHwnd(), g_bLogin);
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -314,13 +314,13 @@ void CStockExecutorDlg::OnStockCurrentMarketPriceByCode()
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 LRESULT CStockExecutorDlg::OnWmLoginEvent(WPARAM wParam, LPARAM lParam)
 {
-    m_xingMsgReceiver.LoginEvent(atoi((LPCSTR)wParam), (LPCSTR)lParam);
+    g_bLogin = m_xingMsgReceiver.LoginEvent(atoi((LPCSTR)wParam), (LPCSTR)lParam);
     return 0L;
 }
 
-LRESULT CStockExecutorDlg::OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam)
+LRESULT CStockExecutorDlg::OnWmIsLoginEvent(WPARAM wParam, LPARAM lParam)
 {
-    m_xingMsgReceiver.IsConnectedEvent(((BOOL)wParam) == TRUE);
+    m_xingMsgReceiver.IsLoginEvent(((BOOL)wParam) == TRUE);
     return 0L;
 }
 

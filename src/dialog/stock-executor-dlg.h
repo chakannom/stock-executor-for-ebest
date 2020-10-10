@@ -26,7 +26,7 @@ protected:
     // Action functions for debugging
     HRESULT OnButtonLogin(IHTMLElement* pElement);
     HRESULT OnButtonLogout(IHTMLElement* pElement);
-    HRESULT OnButtonIsConnected(IHTMLElement* pElement);
+    HRESULT OnButtonIsLogin(IHTMLElement* pElement);
     HRESULT OnButtonStocksByGubun(IHTMLElement* pElement);
     HRESULT OnButtonStockCurrentAskingPriceByCode(IHTMLElement* pElement);
     HRESULT OnButtonStockCurrentMarketPriceByCode(IHTMLElement* pElement);
@@ -48,14 +48,14 @@ protected:
     // Executor functions
     afx_msg void OnLogin();
     afx_msg void OnLogout();
-    afx_msg void OnIsConnected();
+    afx_msg void OnIsLogin();
     afx_msg void OnStocksByGubun();
     afx_msg void OnStockCurrentAskingPriceByCode();
     afx_msg void OnStockCurrentMarketPriceByCode();
 
     // XingAPI functions
     afx_msg LRESULT OnWmLoginEvent(WPARAM wParam, LPARAM lParam);
-    afx_msg LRESULT OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnWmIsLoginEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmReceiveDataEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmTimeoutDataEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmErrorEvent(WPARAM wParam, LPARAM lParam);
@@ -64,6 +64,7 @@ protected:
     DECLARE_DHTML_EVENT_MAP()
 
 private:
+    BOOL g_bLogin;
     CXingMsgSender m_xingMsgSender;
     CXingMsgReceiver m_xingMsgReceiver;
 };

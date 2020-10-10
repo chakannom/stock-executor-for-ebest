@@ -14,11 +14,11 @@ web::json::value CResponseSupporter::GetLoginInformation()
     return json;
 }
 
-web::json::value CResponseSupporter::GetConnectedStatus(BOOL isConnected)
+web::json::value CResponseSupporter::GetLoginStatus(bool isLogin)
 {
     web::json::value json = web::json::value::object();
 
-    json[L"status"] = web::json::value::boolean(isConnected != FALSE);
+    json[L"status"] = web::json::value::boolean(isLogin);
 
     return json;
 }

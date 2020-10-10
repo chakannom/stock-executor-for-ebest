@@ -6,8 +6,8 @@
 class CXingMsgReceiver
 {
 public:
-    void LoginEvent(int nCode, LPCSTR pszMsg);
-    void IsConnectedEvent(bool isConnected);
+    BOOL LoginEvent(int nCode, LPCSTR pszMsg);
+    void IsLoginEvent(bool isLogin);
     void ReceiveRequestDataEvent(LPRECV_PACKET pRpData);
     void ReceiveMessageDataEvent(LPMSG_PACKET pMsg);
     void ReceiveSystemErrorDataEvent(LPMSG_PACKET pErrorMsg);
