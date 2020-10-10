@@ -11,7 +11,7 @@ BOOL CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
         // 로그인 성공
         auto generateMessage = [this, nCode, pszMsg]() {
             resJson[L"code"] = web::json::value::string(L"00000");
-            resJson[L"message"] = web::json::value::string(L"Login was successful");
+            resJson[L"message"] = web::json::value::string(L"Login was successful.");
             resJson[L"data"] = CResponseSupporter::GetLoginInformation();
         };
 
@@ -25,6 +25,19 @@ BOOL CXingMsgReceiver::LoginEvent(int nCode, LPCSTR pszMsg)
 
         return FALSE;
     }
+}
+
+BOOL CXingMsgReceiver::LogoutEvent()
+{
+    // 로그아웃 성공
+    auto generateMessage = [this]() {
+        resJson[L"code"] = web::json::value::string(L"00000");
+        resJson[L"message"] = web::json::value::string(L"Logout.");
+    };
+
+    processMessage(generateMessage);
+
+    return TRUE;
 }
 
 void CXingMsgReceiver::IsLoginEvent(bool isLogin)

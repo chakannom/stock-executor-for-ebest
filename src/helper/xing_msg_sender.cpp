@@ -80,9 +80,10 @@ void CXingMsgSender::Logout(HWND hWnd)
     m_xingAPI.Logout(hWnd);
 }
 
-void CXingMsgSender::Disconnect()
+void CXingMsgSender::Disconnect(HWND hWnd)
 {
     m_xingAPI.Disconnect();
+    SendMessageW(hWnd, WM_USER + XM_CM_LOGOUT, NULL, NULL);
 }
 
 BOOL CXingMsgSender::IsLogin(HWND hWnd, BOOL bLogin)

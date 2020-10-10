@@ -16,7 +16,8 @@
 
 // Custom message by ChaKanNom
 #define     XM_CM_ERROR                 51
-#define     XM_CM_ISLOGIN               52
+#define     XM_CM_LOGOUT                52
+#define     XM_CM_ISLOGIN               53
 //------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------

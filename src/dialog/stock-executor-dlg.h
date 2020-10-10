@@ -54,7 +54,9 @@ protected:
     afx_msg void OnStockCurrentMarketPriceByCode();
 
     // XingAPI functions
+    afx_msg LRESULT OnWmDisconnectEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmLoginEvent(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnWmLogoutEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmIsLoginEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmReceiveDataEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmTimeoutDataEvent(WPARAM wParam, LPARAM lParam);

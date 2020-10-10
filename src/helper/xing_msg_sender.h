@@ -18,7 +18,7 @@ public:
     BOOL Connect(HWND hWnd);
     BOOL Login(HWND hWnd);
     void Logout(HWND hWnd);
-    void Disconnect();
+    void Disconnect(HWND hWnd);
     BOOL IsLogin(HWND hWnd, BOOL bLogin);
     void StocksByGubun(HWND hWnd);
     void StockCurrentAskingPriceByCode(HWND hWnd);

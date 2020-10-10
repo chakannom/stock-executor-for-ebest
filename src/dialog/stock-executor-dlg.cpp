@@ -55,7 +55,9 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
     ON_BN_CLICKED(IDC_BTN_STOCKCURRENTMARKETPRICE, OnStockCurrentMarketPriceByCode)
 
     // for XingAPIEvent
+    ON_MESSAGE(WM_USER + XM_DISCONNECT, OnWmDisconnectEvent)
     ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
+    ON_MESSAGE(WM_USER + XM_CM_LOGOUT, OnWmLogoutEvent)
     ON_MESSAGE(WM_USER + XM_CM_ISLOGIN, OnWmIsLoginEvent)
     ON_MESSAGE(WM_USER + XM_RECEIVE_DATA, OnWmReceiveDataEvent)
     ON_MESSAGE(WM_USER + XM_TIMEOUT_DATA, OnWmTimeoutDataEvent)
@@ -282,7 +284,7 @@ void CStockExecutorDlg::OnLogin()
 void CStockExecutorDlg::OnLogout()
 {
     m_xingMsgSender.Logout(GetSafeHwnd());
-    m_xingMsgSender.Disconnect();
+    m_xingMsgSender.Disconnect(GetSafeHwnd());
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -312,11 +314,25 @@ void CStockExecutorDlg::OnStockCurrentMarketPriceByCode()
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 //	XingAPI.dll로 부터 수신한 윈도우 메시지를 통해 각 이벤트 핸들러
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+LRESULT CStockExecutorDlg::OnWmDisconnectEvent(WPARAM wParam, LPARAM lParam)
+{
+    g_bLogin = FALSE;
+    return 0L;
+}
+
 LRESULT CStockExecutorDlg::OnWmLoginEvent(WPARAM wParam, LPARAM lParam)
 {
     g_bLogin = m_xingMsgReceiver.LoginEvent(atoi((LPCSTR)wParam), (LPCSTR)lParam);
     return 0L;
 }
+
+LRESULT CStockExecutorDlg::OnWmLogoutEvent(WPARAM wParam, LPARAM lParam)
+{
+    m_xingMsgReceiver.LogoutEvent();
+    g_bLogin = FALSE;
+    return 0L;
+}
+
 
 LRESULT CStockExecutorDlg::OnWmIsLoginEvent(WPARAM wParam, LPARAM lParam)
 {

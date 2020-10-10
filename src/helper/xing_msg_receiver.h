@@ -7,6 +7,7 @@ class CXingMsgReceiver
 {
 public:
     BOOL LoginEvent(int nCode, LPCSTR pszMsg);
+    BOOL LogoutEvent();
     void IsLoginEvent(bool isLogin);
     void ReceiveRequestDataEvent(LPRECV_PACKET pRpData);
     void ReceiveMessageDataEvent(LPMSG_PACKET pMsg);
