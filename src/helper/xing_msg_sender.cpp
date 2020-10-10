@@ -1,6 +1,8 @@
 #include <cpprest/json.h>
 
 #include "core/framework.h"
+#include "packet/t1101.h"
+#include "packet/t1102.h"
 #include "packet/t8436.h"
 #include "xing_msg_sender.h"
 
@@ -112,37 +114,50 @@ void CXingMsgSender::StocksByGubun(HWND hWnd)
         "",                         // 다음조회 Key : Header Type이 B 일 경우엔 이전 조회때 받은 Next Key를 넣어준다.
         30                          // Timeout(초) : 해당 시간(초)동안 데이터가 오지 않으면 Timeout에 발생한다. XM_TIMEOUT_DATA 메시지가 발생한다.
     );
+    if (bResult < 0) {      // Request ID가 0보다 작을 경우에는 에러이다.
+        ErrorMessage(hWnd);
+        //MessageBox("조회실패", "에러", MB_ICONSTOP);
+    }
+}
 
-    // Request ID가 0보다 작을 경우에는 에러이다.
+void CXingMsgSender::StockCurrentAskingPriceByCode(HWND hWnd)
+{
+    web::json::value reqJson = web::json::value::parse(m_strData);
+    CStringA code(reqJson.at(L"code").as_string().c_str());
+
+    // 주식 현재가 호가 조회(t1101) ( ATTR,BLOCK,HEADTYPE=A )
+    t1101InBlock pckT1101InBlock;
+    FillMemory(&pckT1101InBlock, sizeof(pckT1101InBlock), ' ');
+
+    // 데이터 입력
+    SetPacketData(pckT1101InBlock.shcode, sizeof(pckT1101InBlock.shcode), code, DATA_TYPE_STRING);
+
+    // 데이터 전송
+    BOOL bResult = m_xingAPI.Request(hWnd, NAME_t1101, &pckT1101InBlock, sizeof(pckT1101InBlock), 0, "", 30);
     if (bResult < 0) {
         ErrorMessage(hWnd);
         //MessageBox("조회실패", "에러", MB_ICONSTOP);
     }
 }
 
-void CXingMsgSender::InquireCurrentPrice(HWND hWnd)
+void CXingMsgSender::StockCurrentMarketPriceByCode(HWND hWnd)
 {
     web::json::value reqJson = web::json::value::parse(m_strData);
-    //종목코드를 가져옵니다
-    CStringA strCode(reqJson.at(L"code").as_string().c_str());
+    CStringA code(reqJson.at(L"code").as_string().c_str());
 
-    //주식현재가조회 서비스에서 요구하는 입력값을 저장할 구조체 변수입니다.
-    //Tc1101InBlock c1101Inblock;
-    //memset(&c1101Inblock, 0x20, sizeof Tc1101InBlock);
+    // 주식 현재가(시세) 조회 ( ATTR,BLOCK,HEADTYPE=A )
+    t1102InBlock pckT1102InBlock;
+    FillMemory(&pckT1102InBlock, sizeof(pckT1102InBlock), ' ');
 
-    //각 입력 필드에서 요구하는 값들에 대한 정의는 *.doc 문서를 통해 확인할 수 있습니다.
-    //SMOVE_A(c1101Inblock.formlang, "k");
-    //SMOVE_A(c1101Inblock.code, strCode);
+    // 데이터 입력
+    SetPacketData(pckT1102InBlock.shcode, sizeof(pckT1102InBlock.shcode), code, DATA_TYPE_STRING);
 
-    //주식 현재가 조회
-    //m_wmca.Query(
-    //    hWnd,                   //이 윈도우로 응답 메시지를 받겠습니다.
-    //    TRID_c1101,             //이 서비스에 대해서 TRID_c1101(5) 식별자를 붙이겠다는 의미이며 반드시 상수일 필요는 없습니다.
-    //    "c1101",                //호출하려는 서비스 코드는 'c1101' 입니다.
-    //    (char*)&c1101Inblock,   //c1101에서 요구하는 입력 구조체 포인터를 지정합니다
-    //    sizeof Tc1101InBlock    //입력 구조체 크기입니다
-    //                            //현재가를 포함한 투자정보 조회는 계좌번호와 무관하므로 계좌번호 인덱스를 지정하지 않습니다.
-    //);
+    // 데이터 전송
+    BOOL bResult = m_xingAPI.Request(hWnd, NAME_t1102, &pckT1102InBlock, sizeof(pckT1102InBlock), 0, "", 30);
+    if (bResult < 0) {
+        ErrorMessage(hWnd);
+        //MessageBox("조회실패", "에러", MB_ICONSTOP);
+    }
 }
 
 void CXingMsgSender::ErrorMessage(HWND hWnd)

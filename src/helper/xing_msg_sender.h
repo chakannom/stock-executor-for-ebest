@@ -21,10 +21,10 @@ public:
     void Disconnect();
     BOOL IsConnected(HWND hWnd);
     void StocksByGubun(HWND hWnd);
-    void InquireCurrentPrice(HWND hWnd);
+    void StockCurrentAskingPriceByCode(HWND hWnd);
+    void StockCurrentMarketPriceByCode(HWND hWnd);
 private:
     IXingAPI m_xingAPI;
 
     void ErrorMessage(HWND hWnd);
 };
-

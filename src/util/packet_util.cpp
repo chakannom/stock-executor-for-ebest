@@ -70,9 +70,14 @@ CStringW GetStringWData(char* psData, int nSize, int nType, int nDotPos)
     return CStringW(GetStringAData(psData, nSize, nType, nDotPos));
 }
 
-long GetLongData(char* psData, int nSize, int nType, int nDotPos)
+long GetLongData(char* psData, int nSize, int nType)
 {
-    return strtol(GetStringAData(psData, nSize, nType, nDotPos), nullptr, 10);
+    return strtol(GetStringAData(psData, nSize, nType, 0), nullptr, 10);
+}
+
+float GetFloatData(char* psData, int nSize, int nType, int nDotPos)
+{
+    return strtof(GetStringAData(psData, nSize, nType, nDotPos), nullptr);
 }
 
 void SetPacketData(char* psData, int nSize, LPCSTR pszSrc, int nType, int nDotPos)

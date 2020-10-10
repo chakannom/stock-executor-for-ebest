@@ -11,5 +11,6 @@ enum
 
 CStringA GetStringAData(char* psData, int nSize, int nType, int nDotPos = 0);
 CStringW GetStringWData(char* psData, int nSize, int nType, int nDotPos = 0);
-long GetLongData(char* psData, int nSize, int nType, int nDotPos = 0);
+long GetLongData(char* psData, int nSize, int nType);
+float GetFloatData(char* psData, int nSize, int nType, int nDotPos = 0);
 void SetPacketData(char* psData, int nSize, LPCSTR pszSrc, int nType, int nDotPos = 0);

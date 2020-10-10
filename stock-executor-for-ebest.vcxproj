@@ -131,6 +131,8 @@
     <ClInclude Include="src\dialog\about-dlg.h" />
     <ClInclude Include="src\dialog\stock-executor-dlg.h" />
     <ClInclude Include="src\helper\packet\t1101.h" />
+    <ClInclude Include="src\helper\packet\t1102.h" />
+    <ClInclude Include="src\helper\packet\t1104.h" />
     <ClInclude Include="src\helper\packet\t8436.h" />
     <ClInclude Include="src\helper\response_supporter.h" />
     <ClInclude Include="src\helper\xing_api.h" />

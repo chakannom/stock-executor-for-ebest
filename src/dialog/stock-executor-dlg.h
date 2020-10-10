@@ -28,7 +28,8 @@ protected:
     HRESULT OnButtonLogout(IHTMLElement* pElement);
     HRESULT OnButtonIsConnected(IHTMLElement* pElement);
     HRESULT OnButtonStocksByGubun(IHTMLElement* pElement);
-    HRESULT OnButtonInquireCurrentPrice(IHTMLElement* pElement);
+    HRESULT OnButtonStockCurrentAskingPriceByCode(IHTMLElement* pElement);
+    HRESULT OnButtonStockCurrentMarketPriceByCode(IHTMLElement* pElement);
     HRESULT OnButtonOK(IHTMLElement *pElement);
     HRESULT OnButtonCancel(IHTMLElement *pElement);
 #endif
@@ -49,12 +50,14 @@ protected:
     afx_msg void OnLogout();
     afx_msg void OnIsConnected();
     afx_msg void OnStocksByGubun();
-    afx_msg void OnInquireCurrentPrice();
+    afx_msg void OnStockCurrentAskingPriceByCode();
+    afx_msg void OnStockCurrentMarketPriceByCode();
 
     // XingAPI functions
     afx_msg LRESULT OnWmLoginEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmIsConnectedEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmReceiveDataEvent(WPARAM wParam, LPARAM lParam);
+    afx_msg LRESULT OnWmTimeoutDataEvent(WPARAM wParam, LPARAM lParam);
     afx_msg LRESULT OnWmErrorEvent(WPARAM wParam, LPARAM lParam);
 
     DECLARE_MESSAGE_MAP()

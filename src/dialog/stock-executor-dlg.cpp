@@ -23,7 +23,8 @@ BEGIN_DHTML_EVENT_MAP(CStockExecutorDlg)
     DHTML_EVENT_ONCLICK(_T("ButtonLogout"), OnButtonLogout)
     DHTML_EVENT_ONCLICK(_T("ButtonIsConnected"), OnButtonIsConnected)
     DHTML_EVENT_ONCLICK(_T("ButtonStocksByGubun"), OnButtonStocksByGubun)
-    DHTML_EVENT_ONCLICK(_T("ButtonInquireCurrentPrice"), OnButtonInquireCurrentPrice)
+    DHTML_EVENT_ONCLICK(_T("ButtonStockCurrentAskingPriceByCode"), OnButtonStockCurrentAskingPriceByCode)
+    DHTML_EVENT_ONCLICK(_T("ButtonStockCurrentMarketPriceByCode"), OnButtonStockCurrentMarketPriceByCode)
     DHTML_EVENT_ONCLICK(_T("ButtonOK"), OnButtonOK)
     DHTML_EVENT_ONCLICK(_T("ButtonCancel"), OnButtonCancel)
 #endif
@@ -50,12 +51,14 @@ BEGIN_MESSAGE_MAP(CStockExecutorDlg, CDHtmlDialog)
     ON_BN_CLICKED(IDC_BTN_LOGOUT, OnLogout)
     ON_BN_CLICKED(IDC_BTN_ISCONNECTED, OnIsConnected)
     ON_BN_CLICKED(IDC_BTN_STOCKSBYGUBUN, OnStocksByGubun)
-    ON_BN_CLICKED(IDC_BTN_INQUIRECURRENTPRICE, OnInquireCurrentPrice)
+    ON_BN_CLICKED(IDC_BTN_STOCKCURRENTASKINGPRICE, OnStockCurrentAskingPriceByCode)
+    ON_BN_CLICKED(IDC_BTN_STOCKCURRENTMARKETPRICE, OnStockCurrentMarketPriceByCode)
 
     // for XingAPIEvent
     ON_MESSAGE(WM_USER + XM_LOGIN, OnWmLoginEvent)
     ON_MESSAGE(WM_USER + XM_CM_ISCONNECTED, OnWmIsConnectedEvent)
     ON_MESSAGE(WM_USER + XM_RECEIVE_DATA, OnWmReceiveDataEvent)
+    ON_MESSAGE(WM_USER + XM_TIMEOUT_DATA, OnWmTimeoutDataEvent)
     ON_MESSAGE(WM_USER + XM_CM_ERROR, OnWmErrorEvent)
 
 END_MESSAGE_MAP()
@@ -218,10 +221,10 @@ HRESULT CStockExecutorDlg::OnButtonStocksByGubun(IHTMLElement* /*pElement*/)
     return S_OK;
 }
 
-HRESULT CStockExecutorDlg::OnButtonInquireCurrentPrice(IHTMLElement* /*pElement*/)
+HRESULT CStockExecutorDlg::OnButtonStockCurrentAskingPriceByCode(IHTMLElement* pElement)
 {
     web::json::value requestJson;
-    requestJson[L"code"] = web::json::value::string(L"005940"); //NH투자증권 코드(005940)
+    requestJson[L"code"] = web::json::value::string(L"078020"); // 이베스트투자증권 코드(078020)
     std::wstring jsonString = requestJson.serialize();
 
     COPYDATASTRUCT cds;
@@ -230,7 +233,23 @@ HRESULT CStockExecutorDlg::OnButtonInquireCurrentPrice(IHTMLElement* /*pElement*
     cds.lpData = (PVOID)jsonString.c_str();
 
     SendMessage(WM_COPYDATA, 0, (LPARAM)&cds);
-    SendMessage(WM_COMMAND, IDC_BTN_INQUIRECURRENTPRICE, 0);
+    SendMessage(WM_COMMAND, IDC_BTN_STOCKCURRENTASKINGPRICE, 0);
+    return S_OK;
+}
+
+HRESULT CStockExecutorDlg::OnButtonStockCurrentMarketPriceByCode(IHTMLElement* pElement)
+{
+    web::json::value requestJson;
+    requestJson[L"code"] = web::json::value::string(L"078020"); // 이베스트투자증권 코드(078020)
+    std::wstring jsonString = requestJson.serialize();
+
+    COPYDATASTRUCT cds;
+    cds.dwData = WM_STOCK_EXECUTOR_SETSTRINGVARIABLE;
+    cds.cbData = jsonString.size();
+    cds.lpData = (PVOID)jsonString.c_str();
+
+    SendMessage(WM_COPYDATA, 0, (LPARAM)&cds);
+    SendMessage(WM_COMMAND, IDC_BTN_STOCKCURRENTMARKETPRICE, 0);
     return S_OK;
 }
 
@@ -279,9 +298,15 @@ void CStockExecutorDlg::OnStocksByGubun()
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-void CStockExecutorDlg::OnInquireCurrentPrice()
+void CStockExecutorDlg::OnStockCurrentAskingPriceByCode()
 {
-    //m_wmcaMsgSender.InquireCurrentPrice(GetSafeHwnd());
+    m_xingMsgSender.StockCurrentAskingPriceByCode(GetSafeHwnd());
+}
+
+//━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+void CStockExecutorDlg::OnStockCurrentMarketPriceByCode()
+{
+    m_xingMsgSender.StockCurrentMarketPriceByCode(GetSafeHwnd());
 }
 
 //━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
@@ -321,6 +346,11 @@ LRESULT CStockExecutorDlg::OnWmReceiveDataEvent(WPARAM wParam, LPARAM lParam)
     return 0L;
 }
 
+LRESULT CStockExecutorDlg::OnWmTimeoutDataEvent(WPARAM wParam, LPARAM lParam)
+{
+    m_xingMsgReceiver.ReceiveReleaseDataEvent((int)lParam);
+    return 0L;
+}
 
 LRESULT CStockExecutorDlg::OnWmErrorEvent(WPARAM wParam, LPARAM lParam)
 {
