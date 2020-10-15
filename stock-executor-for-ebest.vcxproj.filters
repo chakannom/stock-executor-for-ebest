@@ -1,0 +1,156 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="소스 파일">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="리소스 파일">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="헤더 파일\core">
+      <UniqueIdentifier>{a86e53e1-360b-4192-8bd1-ea6abcf53f97}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\helper">
+      <UniqueIdentifier>{67a0e116-2f1d-4ff1-a277-6f07bfe9295f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\core">
+      <UniqueIdentifier>{3b3398df-a6a9-4993-8bad-e8798e09f8a9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\helper">
+      <UniqueIdentifier>{3716c34c-7c2e-4681-a3e6-acdc49b34143}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\dialog">
+      <UniqueIdentifier>{17dce999-cd24-4b24-8c5d-b55f517d1191}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\dialog">
+      <UniqueIdentifier>{6e6072f7-058a-47d1-a6fe-d234ab684301}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\release">
+      <UniqueIdentifier>{11384aaf-431e-4cd5-80c8-5df94d80f540}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\util">
+      <UniqueIdentifier>{833c2f18-cbad-443f-97a5-1424852e2e28}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\debug">
+      <UniqueIdentifier>{dd020d2c-48b3-4880-8a97-7045eb82899f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\helper\packet">
+      <UniqueIdentifier>{f2e162ec-ce5e-4a11-a0d9-ac8eaf5f02bc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="소스 파일\util">
+      <UniqueIdentifier>{b546fba8-cca0-4d57-9eaa-caa4c48c6e78}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include=".gitignore" />
+    <None Include="README.md" />
+    <None Include="LICENSE" />
+    <None Include="res\release\stock-executor.html">
+      <Filter>리소스 파일\release</Filter>
+    </None>
+    <None Include="res\debug\stock-executor.html">
+      <Filter>리소스 파일\debug</Filter>
+    </None>
+    <None Include="res\stock-executor.rc2">
+      <Filter>리소스 파일</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\stock-executor.ico">
+      <Filter>리소스 파일</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\stock-executor.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\framework.h">
+      <Filter>헤더 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\resource.h">
+      <Filter>헤더 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\targetver.h">
+      <Filter>헤더 파일\core</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dialog\stock-executor-dlg.h">
+      <Filter>헤더 파일\dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="src\dialog\about-dlg.h">
+      <Filter>헤더 파일\dialog</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\string_util.h">
+      <Filter>헤더 파일\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\response_supporter.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\datetime_util.h">
+      <Filter>헤더 파일\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\xing_api.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\xing_msg_sender.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\xing_msg_receiver.h">
+      <Filter>헤더 파일\helper</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\packet\t1101.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\packet\t8436.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\util\packet_util.h">
+      <Filter>헤더 파일\util</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\packet\t1102.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+    <ClInclude Include="src\helper\packet\t1104.h">
+      <Filter>헤더 파일\helper\packet</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\stock-executor.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dialog\stock-executor-dlg.cpp">
+      <Filter>소스 파일\dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\dialog\about-dlg.cpp">
+      <Filter>소스 파일\dialog</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper\response_supporter.cpp">
+      <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper\xing_msg_sender.cpp">
+      <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\helper\xing_msg_receiver.cpp">
+      <Filter>소스 파일\helper</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\packet_util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\datetime_util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\util\string_util.cpp">
+      <Filter>소스 파일\util</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="res\stock-executor.rc">
+      <Filter>리소스 파일</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

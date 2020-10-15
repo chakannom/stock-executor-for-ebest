@@ -1,0 +1,8 @@
+/.vs/*
+/Debug/*
+/Release/*
+/build/*
+/logs/*
+*.obj
+*.pdb
+!.empty
